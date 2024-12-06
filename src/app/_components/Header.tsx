@@ -19,7 +19,7 @@ function Header() {
             <Link href="/create_auction">Create Auction</Link>
           </div>
           <div className="text-base cursor-pointer">
-            <Link href="/my_auctions">My Auctions</Link>
+            <Link href="/user_auctions">My Auctions</Link>
           </div>
           <div>
             <Button className="py-2 px-6 bg-sky-900">SignIn</Button>

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { number, z } from 'zod'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB in bytes
 
@@ -31,3 +31,18 @@ export const PostAuctionSchema = z.object({
 })
 
 export type PostAuctionSchemaType = z.infer<typeof PostAuctionSchema>
+
+export interface AuctionItemType {
+  id?: string
+  auction_name: string
+  starting_price: number
+  auction_img: string
+  bid_interval: number
+  current_bid?: number
+  expires_at: Date
+  userId: string
+}
+
+export const UserIdSchema = z.object({
+  userId: z.string().min(5, { message: 'userId is required' }),
+})

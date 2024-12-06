@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import ReactQueryProvider from '@/providers/react-query'
+import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
@@ -35,9 +37,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <ReactQueryProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ReactQueryProvider>
+        <Toaster
+          richColors
+          position="top-right"
+          toastOptions={{
+            className: 'p-4 text-base',
+          }}
+        />
       </body>
     </html>
   )

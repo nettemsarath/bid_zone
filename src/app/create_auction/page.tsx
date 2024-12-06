@@ -21,11 +21,14 @@ import {
 } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 
-import { cn } from '@/lib/utils'
-import { PostAuctionSchema, PostAuctionSchemaType } from '@/types'
+import { PostAuctionSchema, PostAuctionSchemaType } from '@/types/auctionTypes'
+import { useServerActionMutation } from '@/lib/hooks/server-actio-hooks'
+import { createAuctionAction } from './_actions/create_auction'
+import { toast } from 'sonner'
+import { Label } from '@radix-ui/react-label'
 
 function page() {
-  const [date, setDate] = React.useState<Date | undefined>(undefined)
+  const [date, setDate] = React.useState<Date | undefined>(new Date())
 
   const {
     register,
@@ -37,8 +40,22 @@ function page() {
     resolver: zodResolver(PostAuctionSchema),
   })
 
-  const onSubmit = (data: PostAuctionSchemaType) => {
-    console.log('submited data iss', data)
+  const {
+    data,
+    mutateAsync: createAuctionMutate,
+    isPending,
+  } = useServerActionMutation(createAuctionAction, {
+    onError: (error) => {
+      return alert(error.message || 'Failed to updated')
+    },
+    onSuccess: (data) => {
+      // revalidate data or show success toast
+      toast.success(`${data.message}`)
+    },
+  })
+
+  const onSubmit = async (data: PostAuctionSchemaType) => {
+    await createAuctionMutate(data)
   }
   console.log('errors areee', errors)
   return (
@@ -47,7 +64,7 @@ function page() {
         <Card className="max-w-[500px]">
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardHeader>
-              <CardTitle className="text-lg">Post an Item</CardTitle>
+              <CardTitle className="text-2xl">Post an Item</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid w-full items-center gap-4">
@@ -77,6 +94,7 @@ function page() {
                   )}
                 </div>
                 <div className="flex flex-col space-y-1.5">
+                  <Label className="text-sm">Select Auction Image</Label>
                   <Controller
                     control={control}
                     name={'auction_img'}
@@ -104,6 +122,7 @@ function page() {
                   )}
                 </div>
                 <div className="flex flex-col space-y-1.5">
+                  <Label className="text-sm">Auction Expiry Time</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -133,7 +152,7 @@ function page() {
                       />
                     </PopoverContent>
                   </Popover>
-                  {!date && errors.expiry_time && (
+                  {errors.expiry_time && (
                     <span className="text-red-500">
                       {errors.expiry_time.message}
                     </span>

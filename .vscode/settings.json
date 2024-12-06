@@ -1,14 +1,15 @@
 {
-  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[prisma]": {
+    // replace this with the language that is overriding
+    "editor.defaultFormatter": "Prisma.prisma" // Replace this with the extension/formatter you want for that language
   },
+  "editor.formatOnSave": true,
+  "eslint.format.defaultFormatter": "eslint --fix",
+  "eslint.format.enable": true,
+  "eslint.validate": ["javascript", "typescript"],
   "prettier.eslintIntegration": true,
   "prettier.semi": false,
   "prettier.singleQuote": true,
-  "prettier.trailingComma": "all",
-  "eslint.validate": ["javascript", "typescript"],
-  "eslint.format.enable": true,
-  "eslint.format.defaultFormatter": "eslint --fix"
+  "prettier.trailingComma": "all"
 }
