@@ -1,10 +1,10 @@
 import prisma from '@/lib/prisma'
 import { AuctionItemType } from '@/types/auctionTypes'
-import { Auctions } from '@prisma/client'
+import { Auction } from '@prisma/client'
 
 export class AuctionRepository {
-  async createAuction(data: AuctionItemType): Promise<Auctions> {
-    return await prisma.auctions.create({
+  async createAuction(data: AuctionItemType): Promise<Auction> {
+    return await prisma.auction.create({
       data: {
         auction_name: data.auction_name,
         starting_price: data.starting_price,
@@ -16,7 +16,7 @@ export class AuctionRepository {
     })
   }
   async userAuctions(userId: string) {
-    return await prisma.auctions.findMany({
+    return await prisma.auction.findMany({
       where: {
         userId: userId,
       },

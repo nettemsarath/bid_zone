@@ -49,7 +49,6 @@ function page() {
       return alert(error.message || 'Failed to updated')
     },
     onSuccess: (data) => {
-      // revalidate data or show success toast
       toast.success(`${data.message}`)
     },
   })
@@ -60,7 +59,7 @@ function page() {
   console.log('errors areee', errors)
   return (
     <div className="container">
-      <div className="px-4 py-8">
+      <div className="px-8 py-8">
         <Card className="max-w-[500px]">
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardHeader>
@@ -71,12 +70,12 @@ function page() {
                 <div className="flex flex-col space-y-1.5">
                   <Input
                     className="py-6"
-                    {...register('item_name')}
+                    {...register('auction_name')}
                     placeholder="Item Name"
                   />
-                  {errors.item_name && (
+                  {errors.auction_name && (
                     <span className="text-red-500">
-                      {errors.item_name.message}
+                      {errors.auction_name.message}
                     </span>
                   )}
                 </div>

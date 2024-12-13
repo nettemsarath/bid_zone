@@ -5,6 +5,8 @@ import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
+// import NextAuthWrapper from '@/providers/NextAuthWrapper'
+import { SessionProvider } from 'next-auth/react'
 
 // Load variable fonts
 const geistSans = localFont({
@@ -37,18 +39,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col`}
       >
-        <ReactQueryProvider>
-          <Header />
-          {children}
-          <Footer />
-        </ReactQueryProvider>
-        <Toaster
-          richColors
-          position="top-right"
-          toastOptions={{
-            className: 'p-4 text-base',
-          }}
-        />
+        <SessionProvider>
+          <ReactQueryProvider>
+            <Header />
+            {children}
+            <Footer />
+          </ReactQueryProvider>
+          <Toaster
+            richColors
+            position="top-right"
+            toastOptions={{
+              className: 'p-4 text-base',
+            }}
+          />
+        </SessionProvider>
       </body>
     </html>
   )

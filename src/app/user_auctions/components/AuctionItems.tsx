@@ -8,10 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { AuctionItemType } from '@/types/auctionTypes'
+import { UserAuctionWithImgUrl } from '@/types/auctionTypes'
 
 interface AuctionItemProps {
-  auction: AuctionItemType
+  auction: UserAuctionWithImgUrl
 }
 
 const AuctionItem = ({ auction }: AuctionItemProps) => {
@@ -22,11 +22,12 @@ const AuctionItem = ({ auction }: AuctionItemProps) => {
           <CardTitle className="text-center">{auction.auction_name}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4 px-0">
-          <div>
+          <div className="justify-items-center">
             <Image
-              src="https://fastly.picsum.photos/id/29/4000/2670.jpg?hmac=rCbRAl24FzrSzwlR5tL-Aqzyu5tX_PA95VJtnUXegGU"
-              width={400}
-              height={400}
+              src={auction.auction_img_url || '/next.svg'}
+              width={200}
+              height={200}
+              objectFit="cover"
               alt="auction_item"
             />
           </div>
@@ -41,12 +42,12 @@ const AuctionItem = ({ auction }: AuctionItemProps) => {
 }
 
 interface AuctionItemsProps {
-  userAuctions: AuctionItemType[] | undefined
+  userAuctions: UserAuctionWithImgUrl[] | undefined
 }
 
 function AuctionItems({ userAuctions }: AuctionItemsProps) {
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-wrap gap-4">
       {userAuctions &&
         userAuctions.map((auction) => (
           <AuctionItem key={auction.auction_name} auction={auction} />

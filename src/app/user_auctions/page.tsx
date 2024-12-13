@@ -14,9 +14,10 @@ function page() {
     input: { userId: 'cm4d88ba400001co0wzlkmba0' },
     queryKey: ['getUserAuctions'],
   })
+
   console.log('my auctions', userAuctions)
   return (
-    <div className="container py-4 px-4">
+    <div className="container py-8 px-8">
       <div>
         <div className="text-2xl font-bold">My Auctions</div>
         <div className="py-6 flex gap-6">

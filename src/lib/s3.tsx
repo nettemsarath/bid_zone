@@ -13,7 +13,7 @@ const SIGNED_URL_EXPIRE_TIME = Number(
 // Initialize S3 client for Supabase Storage
 const s3Client = new S3Client({
   region: process.env.SUPABASE_REGION, // Your Supabase project's region e.g. "us-east-1"
-  endpoint: `https://${process.env.SUPABASE_PROJECT_URL}.supabase.co/storage/v1/s3`,
+  endpoint: process.env.SUPABASE_STORAGE_URL ?? '',
   credentials: {
     // These credentials can be found in your supabase storage settings, under 'S3 access keys'
     accessKeyId: process.env.SUPABASE_ACCESS_KEY ?? '',
@@ -21,21 +21,19 @@ const s3Client = new S3Client({
   },
 })
 
-interface File {
-  originalname: string // The original name of the file
-  buffer: Buffer // The file content as a Buffer
-  mimetype: string // The MIME type of the file
-}
-
-export const uploadFileToS3 = async (file: File): Promise<PutObjectOutput> => {
+export const uploadFileToS3 = async (
+  file: File,
+  file_key: string,
+): Promise<PutObjectOutput> => {
   try {
+    const fileBuffer = await file.arrayBuffer()
+
     const putObjectCommand = new PutObjectCommand({
       Bucket: process.env.STORAGE_BUCKET_NAME ?? '',
-      Key: `${Date.now()}_${file.originalname}`, // Unique filename to avoid conflicts
-      Body: file.buffer,
-      ContentType: file.mimetype,
+      Key: file_key, // Unique filename to avoid conflicts
+      Body: Buffer.from(fileBuffer),
+      ContentType: file.type,
     })
-
     // Upload the video directly to Supabase Storage
     const uploaded_file = await s3Client.send(putObjectCommand)
     return uploaded_file

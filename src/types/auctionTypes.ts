@@ -10,7 +10,7 @@ const ACCEPTED_IMAGE_TYPES = [
 ]
 
 export const PostAuctionSchema = z.object({
-  item_name: z.string().min(5, {
+  auction_name: z.string().min(5, {
     message: 'Item name is required and must be at least 5 characters long.',
   }),
   starting_price: z.coerce
@@ -40,7 +40,11 @@ export interface AuctionItemType {
   bid_interval: number
   current_bid?: number
   expires_at: Date
-  userId: string
+  userId: string | null
+}
+
+export interface UserAuctionWithImgUrl extends AuctionItemType {
+  auction_img_url?: string
 }
 
 export const UserIdSchema = z.object({
