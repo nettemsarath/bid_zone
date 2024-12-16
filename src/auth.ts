@@ -17,13 +17,17 @@ const authConfig: NextAuthConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log('credentials', credentials)
+        // console.log('credentials', credentials)
         // Simulate fetching user from a database
-        const user = await getLoginUserUsecase({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        })
-        return user
+        try {
+          const user = await getLoginUserUsecase({
+            email: credentials.email as string,
+            password: credentials.password as string,
+          })
+          return user
+        } catch (error) {
+          throw error
+        }
       },
     }),
   ],

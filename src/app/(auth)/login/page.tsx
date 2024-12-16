@@ -3,36 +3,30 @@
 import { signIn, useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const SignIn = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const { data: session } = useSession()
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const res = await signIn('credentials', {
-      redirect: false,
+      redirect: true,
+      redirectTo: '/',
       username,
       email: username,
       password,
       isSignUp: false, // This signals to the API that it's a sign-in
     })
     console.log('signIn reponse isss', res)
-    // if (res?.error) {
-    //   setError('Invalid credentials')
-    // } else if (res?.ok) {
-    //   router.push('/')
-    // }
+    if (res?.error) {
+      // toast.error('Invalid credentials')
+      setError('Invalid credentials')
+    }
   }
-  console.log('session isss', session)
-  // if (session) {
-  //   router.push('/')
-  //   return null
-  // }
 
   return (
     <div>
@@ -58,8 +52,8 @@ const SignIn = () => {
             required
           />
         </div>
-        {error && <p>{error}</p>}
         <button type="submit">Sign In</button>
+        {error && <p className="text-red-400">{error}</p>}
       </form>
       <p>
         Don't have an account? <a href="/auth/signup">Sign up</a>

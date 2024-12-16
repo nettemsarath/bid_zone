@@ -26,10 +26,11 @@ import { useServerActionMutation } from '@/lib/hooks/server-actio-hooks'
 import { createAuctionAction } from './_actions/create_auction'
 import { toast } from 'sonner'
 import { Label } from '@radix-ui/react-label'
+import { useSession } from 'next-auth/react'
 
 function page() {
   const [date, setDate] = React.useState<Date | undefined>(new Date())
-
+  // const { data: userSession, status } = useSession()
   const {
     register,
     handleSubmit,
