@@ -28,7 +28,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // console.log('username, password', username, password)
+    console.log('username, password', username, password)
     await createUserMutate({
       email: username,
       username: username,
@@ -64,7 +64,7 @@ const SignUp = () => {
         <button type="submit">Sign Up</button>
       </form>
       <p>
-        Already have an account? <a href="/auth/signin">Sign in</a>
+        Already have an account? <a href="/login">Sign in</a>
       </p>
     </div>
   )

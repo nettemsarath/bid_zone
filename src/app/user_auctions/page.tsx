@@ -3,18 +3,16 @@
 import React from 'react'
 import { useServerActionQuery } from '@/lib/hooks/server-actio-hooks'
 import { getUserAuctionsAction } from './_actions/user_auction'
-import AuctionItems from './components/AuctionItems'
+import AuctionItems from '@/components/AuctionItems'
 
 function page() {
-  const {
-    isLoading,
-    data: userAuctions,
-    error,
-  } = useServerActionQuery(getUserAuctionsAction, {
-    input: { userId: 'cm4d88ba400001co0wzlkmba0' },
-    queryKey: ['getUserAuctions'],
-  })
-
+  const { isLoading, data: userAuctions } = useServerActionQuery(
+    getUserAuctionsAction,
+    {
+      input: undefined,
+      queryKey: ['getUserAuctions'],
+    },
+  )
   console.log('my auctions', userAuctions)
   return (
     <div className="container py-8 px-8">

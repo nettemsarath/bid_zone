@@ -22,4 +22,16 @@ export class AuctionRepository {
       },
     })
   }
+  async allAuctions() {
+    return await prisma.auction.findMany({})
+  }
+  async allAuctionsExceptUser(userId: string): Promise<Auction[]> {
+    return await prisma.auction.findMany({
+      // where: {
+      //   NOT: {
+      //     userId: userId,
+      //   },
+      // },
+    })
+  }
 }

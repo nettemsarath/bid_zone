@@ -8,6 +8,7 @@ const authConfig: NextAuthConfig = {
   },
   session: {
     strategy: 'jwt',
+    maxAge: 2 * 60 * 60, // 1/2 hours
   },
   providers: [
     Credentials({

@@ -8,10 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { UserAuctionWithImgUrl } from '@/types/auctionTypes'
+import { AuctionWithImgUrl } from '@/types/auctionTypes'
 
 interface AuctionItemProps {
-  auction: UserAuctionWithImgUrl
+  auction: AuctionWithImgUrl
 }
 
 const AuctionItem = ({ auction }: AuctionItemProps) => {
@@ -22,13 +22,12 @@ const AuctionItem = ({ auction }: AuctionItemProps) => {
           <CardTitle className="text-center">{auction.auction_name}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4 px-0">
-          <div className="justify-items-center">
+          <div className="relative flex justify-center items-center w-full h-[200px] overflow-hidden">
             <Image
               src={auction.auction_img_url || '/next.svg'}
-              width={200}
-              height={200}
-              objectFit="cover"
-              alt="auction_item"
+              alt="Description of the image"
+              layout="fill" // Makes the image fill its parent
+              objectFit="cover" // Ensures the image covers the area without stretching
             />
           </div>
           <div className="flex space-x-4 justify-center">
@@ -42,7 +41,7 @@ const AuctionItem = ({ auction }: AuctionItemProps) => {
 }
 
 interface AuctionItemsProps {
-  userAuctions: UserAuctionWithImgUrl[] | undefined
+  userAuctions: AuctionWithImgUrl[] | undefined
 }
 
 function AuctionItems({ userAuctions }: AuctionItemsProps) {
@@ -50,7 +49,7 @@ function AuctionItems({ userAuctions }: AuctionItemsProps) {
     <div className="flex flex-wrap gap-4">
       {userAuctions &&
         userAuctions.map((auction) => (
-          <AuctionItem key={auction.auction_name} auction={auction} />
+          <AuctionItem key={auction.id} auction={auction} />
         ))}
     </div>
   )

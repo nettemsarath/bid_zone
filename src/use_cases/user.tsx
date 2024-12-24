@@ -35,7 +35,6 @@ export const getLoginUserUsecase = async ({
   password: string
 }): Promise<CreatedUser | null> => {
   const user = await userRepository.getUser(email)
-  console.log('user', user)
   if (!user) return null
   // check passowrd entred is correct or not here
   const isPasswordMatch = await bcrypt.compare(password, user.password)

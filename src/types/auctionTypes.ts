@@ -30,7 +30,9 @@ export const PostAuctionSchema = z.object({
   }),
 })
 
-export type PostAuctionSchemaType = z.infer<typeof PostAuctionSchema>
+export type PostAuctionSchemaType = z.infer<typeof PostAuctionSchema> & {
+  userId: string
+}
 
 export interface AuctionItemType {
   id?: string
@@ -43,7 +45,7 @@ export interface AuctionItemType {
   userId: string | null
 }
 
-export interface UserAuctionWithImgUrl extends AuctionItemType {
+export interface AuctionWithImgUrl extends AuctionItemType {
   auction_img_url?: string
 }
 

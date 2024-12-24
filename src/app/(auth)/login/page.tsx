@@ -56,7 +56,7 @@ const SignIn = () => {
         {error && <p className="text-red-400">{error}</p>}
       </form>
       <p>
-        Don't have an account? <a href="/auth/signup">Sign up</a>
+        Don't have an account? <a href="/signup">Sign up</a>
       </p>
     </div>
   )

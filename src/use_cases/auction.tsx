@@ -2,7 +2,7 @@ import { AuctionRepository } from '@/data_access/auction.repository'
 import {
   PostAuctionSchemaType,
   AuctionItemType,
-  UserAuctionWithImgUrl,
+  AuctionWithImgUrl,
 } from '@/types/auctionTypes'
 import { Auction } from '@prisma/client'
 import { getSingedUrl, uploadFileToS3 } from '@/lib/s3'
@@ -22,7 +22,7 @@ export const createAuctionUsecase = async (
     auction_img: file_key,
     bid_interval: 100,
     expires_at: data.expiry_time,
-    userId: 'cm4d88ba400001co0wzlkmba0',
+    userId: data.userId,
   }
   const auctiondata = await auctionRepository.createAuction(new_auction)
   return auctiondata
@@ -30,7 +30,7 @@ export const createAuctionUsecase = async (
 
 export const getUserAuctionsUsecase = async (
   userId: string,
-): Promise<UserAuctionWithImgUrl[]> => {
+): Promise<AuctionWithImgUrl[]> => {
   const userAuctions = await auctionRepository.userAuctions(userId)
   const userAuctionsWithImages = await Promise.all(
     userAuctions.map(async (auction) => {
@@ -50,4 +50,44 @@ export const getUserAuctionsUsecase = async (
   return userAuctionsWithImages
 }
 
-export const getAllAuctionsExceptUser = () => {}
+export const getAllAuctions = async (): Promise<AuctionWithImgUrl[]> => {
+  const allAuctions = await auctionRepository.allAuctions()
+  const allAuctionsWithImages = await Promise.all(
+    allAuctions.map(async (auction) => {
+      if (auction.auction_img) {
+        const auction_img_url = await getSingedUrl(auction.auction_img)
+        return {
+          ...auction,
+          auction_img_url: auction_img_url,
+        }
+      }
+      return {
+        ...auction,
+        auction_img_url: '',
+      }
+    }),
+  )
+  return allAuctionsWithImages
+}
+
+export const getAllAuctionsExceptUser = async (
+  userId: string,
+): Promise<AuctionWithImgUrl[]> => {
+  const auctions = await auctionRepository.allAuctionsExceptUser(userId)
+  const auctionsWithImages = await Promise.all(
+    auctions.map(async (auction) => {
+      if (auction.auction_img) {
+        const auction_img_url = await getSingedUrl(auction.auction_img)
+        return {
+          ...auction,
+          auction_img_url: auction_img_url,
+        }
+      }
+      return {
+        ...auction,
+        auction_img_url: '',
+      }
+    }),
+  )
+  return auctionsWithImages
+}

@@ -20,8 +20,10 @@ export async function middleware(request: NextRequest) {
 
   // Add the user information to the request headers
   if (token) {
-    requestHeaders.set('x-user-id', 'user_12345' as string)
-    requestHeaders.set('x-user-role', 'role_admin' as string)
+    requestHeaders.set('x-user-id', token.id as string)
+    requestHeaders.set('x-user-role', token.role as string)
+    requestHeaders.set('x-user-username', token.username as string)
+    requestHeaders.set('x-user-email', token.email as string)
     // Add any other relevant user information from the token
   }
   const response = NextResponse.next({
