@@ -10,15 +10,20 @@ export const createAuctionAction = isAuthenticatedProcedure
   .input(PostAuctionSchema)
   .output(z.object({ message: z.string() }))
   .handler(async ({ input, ctx }) => {
-    await createAuctionUsecase({
-      auction_name: input.auction_name,
-      starting_price: input.starting_price,
-      auction_img: input.auction_img,
-      expiry_time: input.expiry_time,
-      userId: ctx.user.id,
-    })
+    try {
+      await createAuctionUsecase({
+        auction_name: input.auction_name,
+        starting_price: input.starting_price,
+        auction_img: input.auction_img,
+        expiry_time: input.expiry_time,
+        userId: ctx.user.id,
+      })
 
-    return {
-      message: 'Auction is Created !!!',
+      return {
+        message: 'Auction is Created !!!',
+      }
+    } catch (error: any) {
+      console.log('error isss', error)
+      throw new Error('Failed to create auction: ' + error.message)
     }
   })

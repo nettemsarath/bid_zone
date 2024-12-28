@@ -15,7 +15,7 @@ function Header() {
             </div>
             <div className="flex gap-12">
               <div className="text-base cursor-pointer hover:underline">
-                <Link href="/all_auctions">All Auctions</Link>
+                <Link href="/auctions">All Auctions</Link>
               </div>
               <div className="text-base cursor-pointer hover:underline">
                 <Link href="/create_auction">Create Auction</Link>

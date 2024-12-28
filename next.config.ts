@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         port: '54321',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: new URL(process.env.SUPABASE_STORAGE_URL || '').hostname,
+        pathname: '/**',
+      },
     ],
   },
 }

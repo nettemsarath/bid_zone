@@ -3,7 +3,8 @@
 import React from 'react'
 import { useServerActionQuery } from '@/lib/hooks/server-actio-hooks'
 import { getUserAuctionsAction } from './_actions/user_auction'
-import AuctionItems from '@/components/AuctionItems'
+import AuctionItems from './AuctionItems'
+import Empty_state from './empty-state'
 
 function page() {
   const { isLoading, data: userAuctions } = useServerActionQuery(
@@ -13,14 +14,16 @@ function page() {
       queryKey: ['getUserAuctions'],
     },
   )
-  console.log('my auctions', userAuctions)
+  const hasAuctions = userAuctions && userAuctions.length
   return (
-    <div className="container py-8 px-8">
-      <div>
-        <div className="text-2xl font-bold">My Auctions</div>
-        <div className="py-6 flex gap-6">
-          {userAuctions && <AuctionItems userAuctions={userAuctions} />}
-        </div>
+    <div className="container mx-auto py-12 px-8 space-y-8">
+      <div className="text-4xl font-bold">Your Current Auctions</div>
+      <div className="py-6 flex gap-6">
+        {hasAuctions ? (
+          <AuctionItems userAuctions={userAuctions} />
+        ) : (
+          <Empty_state />
+        )}
       </div>
     </div>
   )

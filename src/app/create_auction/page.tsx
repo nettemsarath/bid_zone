@@ -45,9 +45,10 @@ function page() {
     data,
     mutateAsync: createAuctionMutate,
     isPending,
+    error,
   } = useServerActionMutation(createAuctionAction, {
     onError: (error) => {
-      return alert(error.message || 'Failed to updated')
+      toast.error('Failed to Create Auction')
     },
     onSuccess: (data) => {
       toast.success(`${data.message}`)
@@ -57,117 +58,114 @@ function page() {
   const onSubmit = async (data: PostAuctionSchemaType) => {
     await createAuctionMutate(data)
   }
-  console.log('errors areee', errors)
   return (
-    <div className="container">
-      <div className="px-8 py-8">
-        <Card className="max-w-[500px]">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <CardHeader>
-              <CardTitle className="text-2xl">Post an Item</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5">
-                  <Input
-                    className="py-6"
-                    {...register('auction_name')}
-                    placeholder="Item Name"
-                  />
-                  {errors.auction_name && (
-                    <span className="text-red-500">
-                      {errors.auction_name.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Input
-                    className="py-6"
-                    type="number"
-                    {...register('starting_price')}
-                    placeholder="Starting Price"
-                  />
-                  {errors.starting_price && (
-                    <span className="text-red-500">
-                      {errors.starting_price.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label className="text-sm">Select Auction Image</Label>
-                  <Controller
-                    control={control}
-                    name={'auction_img'}
-                    render={({ field: { value, onChange, ...field } }) => {
-                      return (
-                        <Input
-                          {...field}
-                          onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>,
-                          ) => {
-                            const files = event.target.files
-                            if (files && files.length > 0) {
-                              onChange(files[0])
-                            }
-                          }}
-                          type="file"
-                        />
-                      )
-                    }}
-                  />
-                  {errors.auction_img && (
-                    <span className="text-red-500">
-                      {errors.auction_img.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label className="text-sm">Auction Expiry Time</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={'outline'}
-                        className={`w-[280px] justify-start text-left font-normal ${
-                          !date ? 'text-muted-foreground' : ''
-                        }`}
-                      >
-                        <CalendarIcon />
-                        {date ? format(date, 'PPP') : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Controller
-                        control={control}
-                        name="expiry_time"
-                        render={({ field }) => (
-                          <Calendar
-                            mode="single"
-                            selected={date}
-                            onSelect={(date) => {
-                              setDate(date)
-                              field.onChange(date)
-                            }}
-                          />
-                        )}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  {errors.expiry_time && (
-                    <span className="text-red-500">
-                      {errors.expiry_time.message}
-                    </span>
-                  )}
-                </div>
+    <div className="container mx-auto p-12 px-8">
+      <Card className="max-w-[500px]">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardHeader>
+            <CardTitle className="text-2xl">Post an Item</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Input
+                  className="py-6"
+                  {...register('auction_name')}
+                  placeholder="Item Name"
+                />
+                {errors.auction_name && (
+                  <span className="text-red-500">
+                    {errors.auction_name.message}
+                  </span>
+                )}
               </div>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button type="submit" className="text-base px-4 py-6">
-                Post Item
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
+              <div className="flex flex-col space-y-1.5">
+                <Input
+                  className="py-6"
+                  type="number"
+                  {...register('starting_price')}
+                  placeholder="Starting Price"
+                />
+                {errors.starting_price && (
+                  <span className="text-red-500">
+                    {errors.starting_price.message}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label className="text-sm">Select Auction Image</Label>
+                <Controller
+                  control={control}
+                  name={'auction_img'}
+                  render={({ field: { value, onChange, ...field } }) => {
+                    return (
+                      <Input
+                        {...field}
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>,
+                        ) => {
+                          const files = event.target.files
+                          if (files && files.length > 0) {
+                            onChange(files[0])
+                          }
+                        }}
+                        type="file"
+                      />
+                    )
+                  }}
+                />
+                {errors.auction_img && (
+                  <span className="text-red-500">
+                    {errors.auction_img.message}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label className="text-sm">Auction Expiry Time</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={'outline'}
+                      className={`w-[280px] justify-start text-left font-normal ${
+                        !date ? 'text-muted-foreground' : ''
+                      }`}
+                    >
+                      <CalendarIcon />
+                      {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Controller
+                      control={control}
+                      name="expiry_time"
+                      render={({ field }) => (
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={(date) => {
+                            setDate(date)
+                            field.onChange(date)
+                          }}
+                        />
+                      )}
+                    />
+                  </PopoverContent>
+                </Popover>
+                {errors.expiry_time && (
+                  <span className="text-red-500">
+                    {errors.expiry_time.message}
+                  </span>
+                )}
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-end">
+            <Button type="submit" className="text-base px-4 py-6">
+              Post Item
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
     </div>
   )
 }

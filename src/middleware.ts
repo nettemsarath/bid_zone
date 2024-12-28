@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   })
-  const publicRoutes = ['/', '/login']
+  const publicRoutes = ['/', '/login', '/signup']
   if (publicRoutes.includes(request.nextUrl.pathname)) {
     return NextResponse.next() // Allow access to public routes
   }

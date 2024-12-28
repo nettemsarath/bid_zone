@@ -12,20 +12,24 @@ const auctionRepository = new AuctionRepository()
 export const createAuctionUsecase = async (
   data: PostAuctionSchemaType,
 ): Promise<Auction> => {
-  // upload file to storage and get filename and file location
-  // save auction data in auctions table
-  const file_key = `${Date.now()}_${data.auction_img.name}`
-  const uploadedfile = await uploadFileToS3(data.auction_img, file_key)
-  const new_auction = {
-    auction_name: data.auction_name,
-    starting_price: data.starting_price,
-    auction_img: file_key,
-    bid_interval: 100,
-    expires_at: data.expiry_time,
-    userId: data.userId,
+  try {
+    // upload file to storage and get filename and file location
+    // save auction data in auctions table
+    const file_key = `${Date.now()}_${data.auction_img.name}`
+    const uploadedfile = await uploadFileToS3(data.auction_img, file_key)
+    const new_auction = {
+      auction_name: data.auction_name,
+      starting_price: data.starting_price,
+      auction_img: file_key,
+      bid_interval: 100,
+      expires_at: data.expiry_time,
+      userId: data.userId,
+    }
+    const auctiondata = await auctionRepository.createAuction(new_auction)
+    return auctiondata
+  } catch (error) {
+    throw error
   }
-  const auctiondata = await auctionRepository.createAuction(new_auction)
-  return auctiondata
 }
 
 export const getUserAuctionsUsecase = async (

@@ -28,12 +28,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('username, password', username, password)
     await createUserMutate({
       email: username,
       username: username,
       password: password,
     })
+    router.push('/')
   }
 
   return (
